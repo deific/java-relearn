@@ -2,6 +2,8 @@ package com.learn.struct;
 
 import java.util.Random;
 import java.util.Stack;
+import java.util.concurrent.ConcurrentSkipListSet;
+
 /**
  * 跳表节点
  * @param <T>
@@ -237,5 +239,11 @@ public class SkipList<T> {
         list.delete(4);
         list.delete(8);
         list.printList();
+
+
+        ConcurrentSkipListSet listSet = new ConcurrentSkipListSet();
+        listSet.add(12);
+
+
     }
 }
