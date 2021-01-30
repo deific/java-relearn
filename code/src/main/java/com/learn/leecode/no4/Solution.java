@@ -64,36 +64,45 @@ public class Solution {
      * @return
      */
     public double findMedianSortedArrays2(int[] nums1, int[] nums2) {
-        double result = 0.0;
-        if ((nums1 == null && nums2 == null) || (nums1.length == 0 && nums2.length == 0)) {
+        int n1 = nums1.length;
+        int n2 = nums2.length;
+        double result = 0d;
+        // 保证nums1数组的长度一定小于nums2的长度
+        if (n1 > n2) {
+            result = findMedianSortedArrays(nums2, nums1);
             printData(nums1, nums2, result);
             return result;
         }
 
-        // 有1个元素，或2个元素时，相加
-        if (nums1.length < 2 && nums2.length < 2) {
-            result = (double)((nums1.length == 1?nums1[0]:0) + (nums2.length == 1?nums2[0]:0)) / (nums1.length + nums2.length);
-            printData(nums1, nums2, result);
-            return result;
-        }
+        // 求数组总长度的第k个元素，k是中位数的下标
+        int k = (n1 + n2 + 1)/2;
 
-        // 合并后元素总大小
-        int total = nums1.length + nums2.length;
-        // 中位数下标
-        int midIndex = total / 2;
-        int midIndex1 = nums1.length / 2;
-        int midIndex2 = nums2.length / 2;
-        while (true) {
-            // 数组num1的中间位小于数组2的中间位
-            int min = Math.min(nums1[midIndex1], nums1[midIndex2]);
-            // 排除nums1下所有小于midIndex1的元素，它们不可能是中间数
-            if (nums1[midIndex1] == min) {
-
+        int left = 0;
+        int right = n1;
+        while(left < right){
+            int m1 = left +(right - left)/2;
+            int m2 = k - m1;
+            if (nums1[m1] < nums2[m2-1]) {
+                left = m1 + 1;
+            } else {
+                right = m1;
             }
-
+        }
+        int m1 = left;
+        int m2 = k - left;
+        int c1 = Math.max(m1 <= 0 ? Integer.MIN_VALUE : nums1[m1-1],
+                m2 <= 0 ? Integer.MIN_VALUE : nums2[m2-1]);
+        if ((n1 + n2) % 2 == 1) {
+            result =  c1;
+            printData(nums1, nums2, result);
+            return result;
         }
 
-
+        int c2 = Math.min( m1 >= n1 ? Integer.MAX_VALUE :nums1[m1],
+                m2 >= n2 ? Integer.MAX_VALUE : nums2[m2]);
+        result = (c1 + c2) * 0.5;
+        printData(nums1, nums2, result);
+        return result;
     }
 
     private void printData(int[] nums1, int[] nums2, double mid) {
