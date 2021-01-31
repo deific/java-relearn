@@ -2,102 +2,70 @@
 package com.learn.leecode.tree.no95;
 
 
+import com.learn.leecode.tree.TreeNode;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
-
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
 
 public class Solution {
 
     /**
-     * 中序遍历一个树
-     * 中序遍历的顺序先遍历左子树，根节点，右子树
+     * 给定一个整数 n，生成所有由 1 ... n 为节点所组成的 二叉搜索树 。
      * 递归解法
-     * @param root
+     * @param n
      * @return
      */
-    public List<Integer> inorderTraversal(TreeNode root) {
-        List<Integer> vals = new ArrayList<>();
-        // 无数返回
-        if (root == null) return vals;
-
-        // 遍历左子树数
-        List<Integer> lefts = inorderTraversal(root.left);
-        if (lefts != null) {
-            vals.addAll(lefts);
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) {
+            return new LinkedList<TreeNode>();
         }
-        // 遍历根节点
-        vals.add(root.val);
-        // 遍历右子树
-        List<Integer> rights = inorderTraversal(root.right);
-        if (rights != null) {
-            vals.addAll(rights);
-        }
-        return vals;
+        return generateSubTrees(1, n);
     }
 
-    /**
-     * 中序遍历一个树
-     * 中序遍历的顺序先遍历左子树，根节点，右子树
-     * 迭代解法
-     * @param root
-     * @return
-     */
-    public List<Integer> inorderTraversal2(TreeNode root) {
-        List<Integer> vals = new ArrayList<>();
-        // 无数返回
-        if (root == null) return vals;
 
-        Stack<TreeNode> stack = new Stack<>();
-        TreeNode head = root;
-        while (head != null || !stack.isEmpty()) {
-            // 先走左子树
-            if (head != null) {
-                // 如果左子树不为空，入栈元素，继续向左走
-                stack.push(head);
-                head = head.left;
-            } else {
-                // 左侧走完了，出栈记录输入，再走右侧
-                head = stack.pop();
-                vals.add(head.val);
-                head = head.right;
+    public List<TreeNode> generateSubTrees(int left, int right) {
+        List<TreeNode> allTreeNodes = new LinkedList<TreeNode>();
+        if (left > right) {
+            allTreeNodes.add(null);
+            return allTreeNodes;
+        }
+
+        for (int i = left; i <= right; i++) {
+            // 以i为根节点，递归得到小于i的区间所有左侧树
+            List<TreeNode> leftTree = generateSubTrees(left, i -1);
+
+            // 以i为根节点，递归得到大于i区间所有右侧树
+            List<TreeNode> rightTree = generateSubTrees(i + 1, right);
+
+            // 以i为根节点，根据以上的左右子树，遍历构建所有的搜索二叉树
+            for (TreeNode l : leftTree) {
+                for (TreeNode r : rightTree) {
+                    TreeNode tree = new TreeNode(i);
+                    tree.left = l;
+                    tree.right = r;
+                    allTreeNodes.add(tree);
+                }
             }
         }
-        return vals;
+        return allTreeNodes;
     }
 
-    private void printData(List<Integer> vals) {
-        for (Integer val : vals) {
-            System.out.printf("%s ", val);
+
+
+    private void printData(List<TreeNode> nodes) {
+        com.learn.leecode.tree.no94.Solution solution = new com.learn.leecode.tree.no94.Solution();
+        for (TreeNode node : nodes) {
+            System.out.println("");
+            solution.printData(solution.inorderTraversal(node));
         }
-        System.out.println();
     }
 
     public static void main(String[] args) {
         Solution solution = new Solution();
-        TreeNode treeNode = new TreeNode(1);
-        treeNode.right = new TreeNode(2);
-        treeNode.right.left = new TreeNode(3);
+        List<TreeNode> all = solution.generateTrees(3);
+        solution.printData(all);
 
-        solution.printData(solution.inorderTraversal2(treeNode));
-
-        TreeNode treeNode1 = new TreeNode();
-        solution.printData(solution.inorderTraversal2(treeNode1));
-
-        TreeNode treeNode2 = new TreeNode(1);
-        treeNode2.left = new TreeNode(2);
-        solution.printData(solution.inorderTraversal2(treeNode2));
     }
 }

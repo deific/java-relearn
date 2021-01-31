@@ -2,23 +2,12 @@
 package com.learn.leecode.tree.no94;
 
 
+import com.learn.leecode.tree.TreeNode;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-    TreeNode() {}
-    TreeNode(int val) { this.val = val; }
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
 public class Solution {
 
     /**
@@ -78,7 +67,7 @@ public class Solution {
         return vals;
     }
 
-    private void printData(List<Integer> vals) {
+    public void printData(List<Integer> vals) {
         for (Integer val : vals) {
             System.out.printf("%s ", val);
         }
