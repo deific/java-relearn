@@ -234,6 +234,43 @@ public class RecursionPrintAllSubSequence {
         return Math.max(v1, v2);
     }
 
+    /**
+     * 给定一组数字牌，代表分数。每次只能从左边或右边拿一张牌，
+     * 假设甲乙都绝顶聪明，那么，甲乙如果要赢得游戏，可获得的最大分数是多少？
+     * @param nums
+     * @return
+     */
+    public static int printMaxValue(int[] nums) {
+        return Math.max(getFirstMaxValue(nums, 0, nums.length - 1), getSecondMaxValue(nums, 0, nums.length - 1));
+    }
+
+    public static int getFirstMaxValue(int[] nums, int l, int r) {
+        if (l == r) {
+            return nums[l];
+        }
+        // 先手拿牌，有两种情况
+        // 先拿左侧，后手的最大值
+        int leftFirst = nums[l] + getSecondMaxValue(nums, l + 1, r);
+        // 先拿右侧，
+        int rightFirst = nums[r] + getSecondMaxValue(nums, l, r - 1);
+        return Math.max(leftFirst, rightFirst);
+    }
+
+    public static int getSecondMaxValue(int[] nums, int l, int r) {
+        // 这是对方拿牌，如果l==r，说明没牌了，只能拿到0
+        if (l == r) {
+            return 0;
+        }
+
+        // 在后手的情况下，对手先要拿掉一张牌，留给自己再次先手一定是对方认为最小的结果
+        // 对手先拿左侧时，那自己再次先手可拿的牌的值如下
+        int leftFirst = getFirstMaxValue(nums, l + 1, r);
+        // 先拿右侧，那自己再次先手可拿的牌的值如下
+        int rightFirst = getFirstMaxValue(nums, l, r - 1);
+        // 对手只可能留给自己能拿到的是最小的值
+        return Math.min(leftFirst, rightFirst);
+    }
+
     public static void main(String[] args) {
         String str = "abc";
         List<String> allSubStr = printAllSequence(str);
@@ -266,5 +303,8 @@ public class RecursionPrintAllSubSequence {
 
         System.out.println("\n可装入最大价值为：1=" + maxValue + "  2=" + maxValue2);
 
+        int[] scoreNums = { 4, 7, 9, 5};
+        int maxScore = printMaxValue(scoreNums);
+        System.out.println("\n最大分数：maxScore=" + maxScore);
     }
 }
