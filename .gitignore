@@ -4,3 +4,7 @@
 /.idea
 /code/.idea
 /code/*.iml
+/code/base/*.iml
+/code/base/target
+/code/seata/seata-order/target
+/code/seata/seata-stock/.mvn

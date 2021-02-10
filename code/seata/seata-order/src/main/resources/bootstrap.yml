@@ -7,7 +7,3 @@ spring:
         server-addr: localhost:8848
       discovery:
         server-addr: localhost:8848
-    alibaba:
-      seata:
-        # 与seata-server定义保持一致
-        tx-service-group: my_test_tx_group
