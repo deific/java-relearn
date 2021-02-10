@@ -10,29 +10,14 @@ spring:
 server:
   port: 9901
 
-seata:
-  enabled: true
-  application-id: ${spring.application.name}
-  tx-service-group: ${spring.application.name}-group
-  enable-auto-data-source-proxy: true
-  config:
-    type: nacos
-    nacos:
-      namespace:
-      serverAddr: localhost:8848
-      group: SEATA_GROUP
-      userName: ""
-      password: ""
-  registry:
-    type: nacos
-    nacos:
-      application: seata-server
-      server-addr: localhost:8848
-      namespace:
-      userName: ""
-      password: ""
-
-
 logging:
   level:
     root: debug
+    com:
+      alibaba:
+        nacos: info
+    sun:
+      sun:
+        rmi: info
+      net:
+        www: info
