@@ -64,15 +64,15 @@ public class SeataOrderController extends ApiController {
      */
     @PostMapping
 //    @Transactional
-    @GlobalTransactional
-    public R insert(@RequestBody SeataOrder seataOrder) {
+    @GlobalTransactional(rollbackFor = Exception.class)
+    public R<String> insert(@RequestBody SeataOrder seataOrder) {
         // 扣减库存
         seataStockFeignClient.reduce(Integer.valueOf(seataOrder.getCommodityCode()), seataOrder.getCount());
         // 创建订单
         boolean isOk = this.seataOrderService.save(seataOrder);
         // 模拟订单创建失败
-        int result = 10 / 0;
-        return success(result);
+        throw new IllegalArgumentException("异常");
+//        return R.ok("");
     }
 
     /**
