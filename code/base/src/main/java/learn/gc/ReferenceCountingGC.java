@@ -11,17 +11,12 @@ import java.util.List;
  */
 public class ReferenceCountingGC {
 
-    public Object instance = null;
-
     private static final int _1MB = 1024 * 2014;
 
-    // 唯一的作用就是该对象实例占用1MB的内存
-    private byte[] bigSize = new byte[7 * _1MB];
-
-    private static List<Object> objList = new ArrayList<>();
 
     public static void testGC() {
-
+        // 唯一的作用就是该对象实例占用1MB的内存
+        List<Object> objList = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             System.out.println("循环次数：" + i);
             ReferenceCountingGC a = new ReferenceCountingGC();
@@ -41,7 +36,19 @@ public class ReferenceCountingGC {
         }
     }
 
+
+    /**
+     * VM参数：-verbose:gc -Xms20M -Xmx20M -Xmn10M -XX:+PrintGCDetails -XX:SurvivorRatio=8
+     */
+    public static void testAllocation() {
+        byte[] allocation1, allocation2, allocation3, allocation4;
+        allocation1 = new byte[1 * _1MB];
+        allocation2 = new byte[1 * _1MB];
+//        allocation3 = new byte[2 * _1MB];
+        allocation4 = new byte[4 *_1MB];
+    }
     public static void main(String[] args) {
-        testGC();
+//        testGC();
+        testAllocation();
     }
 }
