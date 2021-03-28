@@ -1,11 +1,14 @@
 
 package learn.juc;
 
+import sun.misc.Contended;
+
 public class CacheLinePadding {
 
     // 缓存行是为了追求极致的效率
-
-    static class T {
+    // jdk1.8之后通 @Contended 注解可以让对象数据在同一行缓存行
+    @Contended
+    private static class T {
 //        private  long p1, p2, p3, p4, p5, p6, p7;
         public long x = 0L;
 //        private  long p11, p12, p13, p14, p15, p16, p17;
