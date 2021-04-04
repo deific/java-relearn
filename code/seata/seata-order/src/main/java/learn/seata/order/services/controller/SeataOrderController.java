@@ -64,7 +64,7 @@ public class SeataOrderController extends ApiController {
      */
     @PostMapping
 //    @Transactional
-    @GlobalTransactional(rollbackFor = Exception.class)
+//    @GlobalTransactional(rollbackFor = Exception.class)
     public R<String> insert(@RequestBody SeataOrder seataOrder) {
         // 扣减库存
         seataStockFeignClient.reduce(Integer.valueOf(seataOrder.getCommodityCode()), seataOrder.getCount());
