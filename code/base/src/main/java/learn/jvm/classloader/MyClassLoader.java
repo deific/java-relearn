@@ -1,10 +1,45 @@
 
 package learn.jvm.classloader;
 
-public class MyClassLoader {
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
+public class MyClassLoader extends ClassLoader {
 
-    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public byte[] getClassFile(String filePath, String name)  {
+        try {
+            String myPath = "file:///" + filePath + "//" + name.replace(".","//") + ".class";
+            return Files.readAllBytes(Paths.get(new URI(myPath)));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 重载loadClass方法，打破双亲加载规则，自己加载class
+     * @param name
+     * @return
+     * @throws ClassNotFoundException
+     */
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        Class clazz = null;
+        try {
+            clazz = getSystemClassLoader().getParent().loadClass(name);
+        } catch (ClassNotFoundException e) {
+            byte[] classData = getClassFile("E://temp", name);
+            clazz = defineClass(classData, 0, classData.length);
+        }
+        return clazz;
+    }
+
+    public Class<?> loadClassByMySelf(String className) throws ClassNotFoundException {
+        return this.loadClass(className);
+    }
+
+    public static void loadClassBySystem() throws ClassNotFoundException, IllegalAccessException, InstantiationException {
         ClassLoader loader = Thread.currentThread().getContextClassLoader();
         // 默认应该是ApplicationClassLoader
         System.out.println(loader);
@@ -28,5 +63,15 @@ public class MyClassLoader {
 
 //        Test[] test2 = new Test[Integer.MAX_VALUE];
         System.out.println(test);
+    }
+
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+//        loadClassBySystem();
+        MyClassLoader myClassLoader = new MyClassLoader();
+        Thread.currentThread().setContextClassLoader(myClassLoader);
+        Class clazz = myClassLoader.loadClassByMySelf("A");
+
+        System.out.println(clazz.newInstance().getClass().getClassLoader());
+
     }
 }
