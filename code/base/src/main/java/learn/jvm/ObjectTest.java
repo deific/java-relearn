@@ -1,7 +1,6 @@
 
 package learn.jvm;
 
-import org.openjdk.jol.info.ClassLayout;
 
 import java.util.Random;
 
@@ -37,7 +36,7 @@ public class ObjectTest {
 //        System.out.println(ClassLayout.parseInstance(m).toPrintable());
 
         M1 m1 = new M1();
-        System.out.println(ClassLayout.parseInstance(m1).toPrintable());
+//        System.out.println(ClassLayout.parseInstance(m1).toPrintable());
 
 //        M1[] m2 = new M1[2];
 //        System.out.println(ClassLayout.parseInstance(m2).toPrintable());
