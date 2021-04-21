@@ -14,7 +14,12 @@ import java.util.Map;
  * @version: 1.0
  */
 public class ProxyPerfTester {
+
+    private static int a;
+
     public static void main(String[] args) {
+
+        ProxyPerfTester test = new ProxyPerfTester();
         //创建测试对象；
         Test nativeTest = new TestImpl();
         Test decorator = new DecoratorTest(nativeTest);

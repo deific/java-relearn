@@ -1,8 +1,5 @@
 package learn.juc;
 
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-
 /**
  * @description:
  * @author: deific
