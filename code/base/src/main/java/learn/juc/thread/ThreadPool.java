@@ -55,6 +55,9 @@ public class ThreadPool {
         System.out.println(" getPoolSize = " + pool1.getPoolSize());
 
         pool1.awaitTermination(3000, TimeUnit.MILLISECONDS);
+
+
+        ConcurrentLinkedQueue linkedQueue = new ConcurrentLinkedQueue();
     }
 
     public static void test2() throws InterruptedException {
